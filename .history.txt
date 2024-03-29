@@ -1,0 +1,20 @@
+clear
+ls
+clear
+ls
+ls -al
+cd
+cd -
+cd /
+cd..
+cd ..
+cd -
+cd
+cd -
+ksdfjak
+clear
+cd -
+clear
+sleep
+sleep 5
+exit
