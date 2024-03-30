@@ -1,8 +1,9 @@
 #include "headers.h"
 
-void Format(char* input, char* format, char* root_dir){
+void format(char* input, char* fmt, char* root){
+
     if(strcmp(input, "ls\n")==0){
-        sprintf(format, " ");
+        sprintf(fmt, " ");
         return;
     }
 
@@ -19,67 +20,54 @@ void Format(char* input, char* format, char* root_dir){
     }
 
     if(flagger==1){
-        sprintf(format, " ");
+        sprintf(fmt, " ");
         return;
     }
 
     char flags[4];
     sprintf(flags, "");
 
-    int mark=0;
-
     char* inp_cpy = (char*)malloc((strlen(input)+1)*sizeof(char));
     strcpy(inp_cpy, input);
 
     char* token;
+    int a_flg=0, l_flg=0;
 
-    int flag=0, flag2=0;
-
-    while(token = strtok_r(input, " \n\r\t\v\f", &input)){
-        if(mark == 0){
-            if(strncmp(token, "-", 1) == 0){
-                for(int i=1; i<=strlen(token); i++){
-                    if(token[i] == 'l')
-                        flag=1;
-                    else if(token[i] == 'a')
-                        flag2=1;
-                }
+    while(token = strtok_r(inp_cpy, " \n\r\t\v\f", &inp_cpy)){
+        if(strncmp(token, "-", 1) == 0){
+            for(int i=1; i<=strlen(token); i++){
+                if(token[i] == 'l')
+                    l_flg=1;
+                else if(token[i] == 'a')
+                    a_flg=1;
             }
         }
     }
 
-    if(flag == 1 && flag2 == 0){
-        sprintf(flags, "-l");
-    }
+    if(a_flg == 1)
+        if(l_flg == 1) sprintf(flags, "-la");
+        else sprintf(flags, "-a");
 
-    else if(flag == 0 && flag2 == 1){
-        sprintf(flags, "-a");
-    }
+    else if (l_flg == 1) sprintf(flags, "-l");
 
-    else if(flag == 1 && flag2 == 1){
-        sprintf(flags, "-la");
-    }
-
-
-    if (mark==1)
-        sprintf(flags, "%s ", flags);
-
-    char* direct = (char*)malloc(512*sizeof(char));
-    char* abs_path = (char*)malloc(256*sizeof(char));
+    char* direct = (char*)malloc(__PATH_MAX__*sizeof(char));
+    char* abs_path = (char*)malloc(__PATH_MAX__*sizeof(char));
 
     sprintf(direct, "");  
     sprintf(abs_path, "");  
     
     char* token2;
-    mark=0;
+    int mark=0;
 
-    while(token2 = strtok_r(inp_cpy, " \n\r\t\v\f", &inp_cpy)){
+    while(token2 = strtok_r(input, " \n\r\t\v\f", &input)){
         if(mark == 0){
             if(strncmp(token2, "-", 1) != 0 && strncmp(token2, "ls", 2) != 0){
+                
                 if (strncmp(token2, "~", 1) == 0)
-                    sprintf(abs_path, "%s%s", root_dir, &token2[1]);
-                else
-                    sprintf(abs_path, "%s", token2);
+                    sprintf(abs_path, "%s%s", root, &token2[1]);
+                
+                else sprintf(abs_path, "%s", token2);
+                
                 sprintf(direct, "%s ", abs_path);
                 mark=1;
             }
@@ -87,15 +75,17 @@ void Format(char* input, char* format, char* root_dir){
 
         else{
             if(strncmp(token2, "-", 1) != 0){
+                
                 if (strncmp(token2, "~", 1) == 0)
-                    sprintf(abs_path, "%s%s", root_dir, &token2[1]);
-                else
-                    sprintf(abs_path, "%s", token2);
+                    sprintf(abs_path, "%s%s", root, &token2[1]);
+                
+                else sprintf(abs_path, "%s", token2);
+                
                 sprintf(direct, "%s%s ", direct, abs_path);
             }
         }
     }
 
-    if(strcmp(direct, "") == 0) sprintf(format, "%s", flags);
-    else sprintf(format, "%s %s", flags, direct);
+    if (strcmp(direct, "") == 0) sprintf(fmt, "%s", flags);
+    else sprintf(fmt, "%s %s", flags, direct);
 }

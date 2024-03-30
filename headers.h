@@ -17,7 +17,6 @@
 #include <langinfo.h>
 #include <sys/types.h>
 
-#include "ls.h"
 #include "term.h"
 #include "main.h"
 #include "colors.h"

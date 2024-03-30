@@ -4,7 +4,7 @@ void pathFinder(char* source, char* root){
 
     // Start by writing into the destination path string 
     // the absolute path to the home directory.
-    char* dest = (char *)malloc(strlen(root)*sizeof(char));
+    char dest[__PATH_MAX__];
     strcpy(dest, root);
     
     char* substring;
@@ -24,7 +24,7 @@ void pathFinder(char* source, char* root){
 
 char* cd(char* input, char* root_dir, char* cwd, char* prev){
 
-    char* new_cwd = (char*)malloc(__PATH_MAX__ * sizeof(char));
+    char new_cwd[__PATH_MAX__];
     char* token;
     int flag = 0;
 
@@ -75,7 +75,7 @@ char* cd(char* input, char* root_dir, char* cwd, char* prev){
 
                     //...Then copy the root_dir into the path being constructed to start off... 
                     
-                    char* source = (char *)malloc(strlen(token)*sizeof(char));
+                    char source[__PATH_MAX__];
                     strcpy(source, &token[1]);
                     
                     // ...and call this function to investigate the absolute path

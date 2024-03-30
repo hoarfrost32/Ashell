@@ -27,3 +27,8 @@
     #define __FORK_EXEC
         void fork_exec(char* token3, char* cpy_tok2, char* cwd, char* copy_root, char* prev);
 #endif
+
+#ifndef __LS
+    #define __LS
+    void ls(char * cpy_tok2, char* root_dir);
+#endif
