@@ -18,7 +18,7 @@ int main() {
     getcwd(root_dir, __PATH_MAX__);
     int time = 0;
 
-    while`(1) {
+    while(1) {
 
         // Fetch the hostname.
 
