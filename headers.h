@@ -1,24 +1,29 @@
 #define _GNU_SOURCE
-#include "ls.h"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include "funcs.h"
-#include <sys/types.h>
+
 #include <pwd.h>
-#include "main.h"
-#include "colors.h"
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include "format.h"
-#include <libgen.h>
-#include <fcntl.h>
 #include <grp.h>
 #include <time.h>
-#include <locale.h>
-#include <langinfo.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
-#include "discover.h"
+#include <unistd.h>
+#include <locale.h>
+#include <dirent.h>
+#include <libgen.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <langinfo.h>
+#include <sys/types.h>
+
+#include "ls.h"
 #include "term.h"
+#include "main.h"
+#include "colors.h"
+#include "format.h"
+#include "discover.h"
+#include "funcs/inbuilt.h"
+
+#define __PATH_MAX__ 4097
+#define HOSTNAME_MAX 255

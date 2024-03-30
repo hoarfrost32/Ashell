@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "headers.h": "c",
+        "term.h": "c",
+        "ls.h": "c",
+        "pwd.h": "c",
+        "main.h": "c",
+        "inbuilt.h": "c"
+    }
+}
