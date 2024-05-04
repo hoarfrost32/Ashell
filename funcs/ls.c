@@ -77,10 +77,11 @@ void do_ls(char* format, int flag, int mode){
 
     for(int i=0; i<dir_size; i++){
 
-        char* fstr;
-        fstr=(char*)malloc((strlen(format) + 256)*sizeof(char));
-        sprintf(fstr, "%s/%s", format, namelist[i]->d_name);
+        char* fstr = (char*)malloc((strlen(format) + 256)*sizeof(char));
+        // char* to_free_fstr_blk = fstr;
 
+        sprintf(fstr, "%s/%s", format, namelist[i]->d_name);
+  
         if(stat(fstr, &sc)==0){
             if(S_ISDIR(sc.st_mode))
                 printf(RED);
@@ -106,6 +107,8 @@ void do_ls(char* format, int flag, int mode){
                 verbose(fstr, namelist[i]);
             free(namelist[i]);
         }
+
+        free(fstr);
     }
 
     free(namelist);
@@ -130,22 +133,21 @@ void check_flgs(char* input){
         }
     }
 
-    int flag = 0;
-
-    while(token = strtok_r(NULL, " \n\r\t\f\v", &input)){
-        do_ls(token, a_flg, l_flg);
-        flag=1;
-    }
-
     // It is possible that while flags are used no path to a file/directory
     // is provided.
-  
-    if(!flag){
+    token = strtok_r(NULL, " \n\r\t\f\v", &input);
+    if (token == NULL){ 
         char cwd[__PATH_MAX__];
         getcwd(cwd, __PATH_MAX__);
         do_ls(cwd, a_flg, l_flg);
         return;
     }
+    
+    do_ls(token, a_flg, l_flg);
+    while(token = strtok_r(NULL, " \n\r\t\f\v", &input))
+        token = strtok_r(NULL, " \n\r\t\f\v", &input);    
+
+    return;
 }
 
 void ls(char* input, char* root){ 
@@ -159,7 +161,7 @@ void ls(char* input, char* root){
      input adhering to the following guidelines:
      
      - The fmt_input contains the formatted arguments in the following format;
-            -<flags> <file/directory>
+            -<flags> <file_1/directory_1> <file_2/directory_2> ...
      - Repeat instances of the flags are dealt with and the formatted input contains
        only one instance of each flag.
      - The path to the file or directory is now an absolute path.
@@ -167,16 +169,23 @@ void ls(char* input, char* root){
 
     char* fmt_input;
     fmt_input = (char *)malloc((__PATH_MAX__ + 4)*sizeof(char));
+    char* to_free_fmt_blk = fmt_input;
 
     format(input, fmt_input, root);
+
+    // printf("%s\n", fmt_input);
 
     // If the fmt_input is empty, that means the user intended to execute ls with no
     // flags on the current working directory.
 
     if(strcmp(fmt_input, " ")==0){
         char cwd[__PATH_MAX__];
+        
         getcwd(cwd, __PATH_MAX__);
         do_ls(cwd, 0, 0);
+
+        free (to_free_fmt_blk);
+        return;
     }
 
     // If the first character is a hyphen, flags were used. Here we call the check_flgs 
@@ -184,6 +193,8 @@ void ls(char* input, char* root){
 
     if(fmt_input[0]=='-'){ 
         check_flgs(fmt_input);
+
+        free(to_free_fmt_blk);
         return;
     }
 
@@ -195,8 +206,12 @@ void ls(char* input, char* root){
 
     char* token;
 
-    while(token = strtok_r(fmt_input, " \n\r\v\f\t", &fmt_input))
+    while(token = strtok_r(fmt_input, " \n\r\v\f\t", &fmt_input)){
         do_ls(token, 0, 0);
+        printf("\n");
+    }
+
+    free(to_free_fmt_blk);
 
     return;
 }

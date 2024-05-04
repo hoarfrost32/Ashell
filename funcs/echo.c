@@ -4,8 +4,9 @@ void echo(char* input){
 
     char* token;
 
-    while (token = strtok_r(NULL, " \"\n\t\r\v\f", &input))
+    while (token = strtok_r(NULL, " \"\n\t\r\v\f", &input)){
         printf("%s ", token);
-
+        // free(token);
+    }
     printf("\n");
 }

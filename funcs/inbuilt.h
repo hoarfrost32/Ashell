@@ -20,7 +20,7 @@
 
 #ifndef __CD
     #define __CD
-    char* cd(char* input, char* root_dir, char* cwd, char* prev);
+    void cd(char* input, char* root_dir, char* cwd, char* prev, char* new);
 #endif
 
 #ifndef __FORK_EXEC
@@ -31,4 +31,9 @@
 #ifndef __LS
     #define __LS
     void ls(char * cpy_tok2, char* root_dir);
+#endif
+
+#ifndef __DISCOVER
+    #define __DISCOVER
+    void discover(char* cpy_tok2, char* root_dir);
 #endif

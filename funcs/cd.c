@@ -4,7 +4,7 @@ void pathFinder(char* source, char* root){
 
     // Start by writing into the destination path string 
     // the absolute path to the home directory.
-    char dest[__PATH_MAX__];
+    char* dest = (char *)malloc(strlen(root)*sizeof(char));
     strcpy(dest, root);
     
     char* substring;
@@ -12,7 +12,7 @@ void pathFinder(char* source, char* root){
     // strchr() is a function that returns a pointer to
     // the first instance of a character in a string.
     substring = strchr(source, '/') + 1;
-    strcpy(dest, substring);
+    strcpy(dest, source);
 
     // Through strchr() we obtain a char* ptr to the substring
     // in the source path that describes the dest after the ~.
@@ -22,9 +22,8 @@ void pathFinder(char* source, char* root){
     free(dest);
 }
 
-char* cd(char* input, char* root_dir, char* cwd, char* prev){
+void cd(char* input, char* root_dir, char* cwd, char* prev, char* new_cwd){
 
-    char new_cwd[__PATH_MAX__];
     char* token;
     int flag = 0;
 
@@ -75,12 +74,13 @@ char* cd(char* input, char* root_dir, char* cwd, char* prev){
 
                     //...Then copy the root_dir into the path being constructed to start off... 
                     
-                    char source[__PATH_MAX__];
-                    strcpy(source, &token[1]);
+                    char* source = (char *)malloc(strlen(token)*sizeof(char));
+                    strcpy(source, &token[2]);
                     
                     // ...and call this function to investigate the absolute path
                     // to the target directory. And change to said directory.
                     pathFinder(source, root_dir);
+                    free(source);
                 }
             }
             
@@ -92,7 +92,10 @@ char* cd(char* input, char* root_dir, char* cwd, char* prev){
                 printf("ERROR: Invalid number of command line arguments\n");
                 chdir(cwd);
             }
-            return cwd;
+            strcpy(new_cwd, cwd);
+
+            free(token);
+            return;
         }
         
         flag=0;
@@ -100,6 +103,7 @@ char* cd(char* input, char* root_dir, char* cwd, char* prev){
 
     if(flag==0) chdir(root_dir);
     
+    // char n_cwd[__PATH_MAX__] = malloc(__PATH_MAX__ * sizeof(char));
     getcwd(new_cwd, __PATH_MAX__);
-    return new_cwd;
+    return;
 }

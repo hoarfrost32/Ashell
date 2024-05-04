@@ -1,8 +1,8 @@
 #include "../headers.h"
 
 void hist(char* root_dir){
-    char cwd[256];
-    getcwd(cwd, 256);
+    char cwd[__PATH_MAX__];
+    getcwd(cwd, __PATH_MAX__);
 
     chdir(root_dir);
 
