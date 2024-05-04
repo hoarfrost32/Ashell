@@ -21,7 +21,6 @@
 #include "main.h"
 #include "colors.h"
 #include "format.h"
-#include "discover.h"
 #include "funcs/inbuilt.h"
 
 #define __PATH_MAX__ 4097

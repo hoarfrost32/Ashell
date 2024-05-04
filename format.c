@@ -2,6 +2,8 @@
 
 void format(char* input, char* fmt, char* root){
 
+    // char* fmt = (char *)malloc((__PATH_MAX__ + 4) * sizeof(char));
+
     if(strcmp(input, "ls\n")==0){
         sprintf(fmt, " ");
         return;
@@ -29,6 +31,8 @@ void format(char* input, char* fmt, char* root){
 
     char* inp_cpy = (char*)malloc((strlen(input)+1)*sizeof(char));
     strcpy(inp_cpy, input);
+
+    char* to_free_inp_blk = inp_cpy;
 
     char* token;
     int a_flg=0, l_flg=0;
@@ -88,4 +92,10 @@ void format(char* input, char* fmt, char* root){
 
     if (strcmp(direct, "") == 0) sprintf(fmt, "%s", flags);
     else sprintf(fmt, "%s %s", flags, direct);
+
+    free(to_free_inp_blk);
+    free(direct);
+    free(abs_path);
+
+    return;
 }
