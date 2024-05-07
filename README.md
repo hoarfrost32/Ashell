@@ -38,7 +38,5 @@ Following are the commands that have been built into Ashell:
     This command can be used to search for a file or directory within a directory. It can also be used to display all the files and/or directories within a given directory.
     </p>
 </li>
-<li><b>Foreground Commands</b>: <p>
-    Additionally, we can also run system commands not built into the shell in the foreground (background processes were not implemented). 
-    </p>
-</li>
+
+Additionally, we can also run processes not directly built into the shell (only in the foreground though :P)
